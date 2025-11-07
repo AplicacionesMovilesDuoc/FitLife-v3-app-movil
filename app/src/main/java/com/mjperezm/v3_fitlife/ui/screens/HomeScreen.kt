@@ -13,6 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mjperezm.v3_fitlife.R
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 
 /**
  * HomeScreen - Pantalla principal de FitLife
