@@ -4,7 +4,12 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
 
-    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
+
+    // Add the Google services Gradle plugin
+
+
+
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -15,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId = "com.mjperezm.v3_fitlife"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -54,6 +59,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.ui)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,6 +68,17 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
     // Compose BOM
 
     implementation("androidx.compose.ui:ui")
