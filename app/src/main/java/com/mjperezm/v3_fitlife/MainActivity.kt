@@ -1,37 +1,28 @@
 package com.mjperezm.v3_fitlife
 
-import android.R
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.mjperezm.v3_fitlife.ui.theme.V3fitlifeTheme
-import com.mjperezm.v3_fitlife.ui.screens.HomeScreen
-import com.mjperezm.v3_fitlife.ui.theme.V3fitlifeTheme
 import androidx.compose.material3.Surface
-
+import androidx.compose.ui.Modifier
+import com.mjperezm.v3_fitlife.ui.navigation.AppNavigation
+import com.mjperezm.v3_fitlife.ui.theme.FitLifeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
         setContent {
-            // Aplica el tema de Material Design 3
-            V3fitlifeTheme {
-                // Surface proporciona el fondo de la app
+            FitLifeTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Muestra la pantalla principal
-                    HomeScreen()
+                    AppNavigation()
                 }
             }
         }

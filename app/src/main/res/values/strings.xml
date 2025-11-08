@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">v3-fitlife</string>
+    <string name="app_name">FitLife</string>
+
+    <!-- Login -->
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="register_link">¿No tienes cuenta? Regístrate</string>
+
+    <!-- Register -->
+    <string name="register_title">Crear Cuenta</string>
+    <string name="name_hint">Nombre completo</string>
+    <string name="confirm_password_hint">Confirmar contraseña</string>
+    <string name="register_button">Registrarse</string>
+
+    <!-- Home -->
+    <string name="home_welcome">¡Bienvenido de vuelta!</string>
+    <string name="home_subtitle">Continúa con tu rutina de hoy</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Mi Perfil</string>
+    <string name="change_avatar">Cambiar foto</string>
+
+    <!-- Progress -->
+    <string name="progress_title">Mi Progreso</string>
+    <string name="add_progress">Agregar progreso</string>
+
+    <!-- Common -->
+    <string name="loading">Cargando…</string>
+    <string name="error">Error</string>
+    <string name="retry">Reintentar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="save">Guardar</string>
 </resources>
