@@ -218,8 +218,10 @@ Cada pantalla gestiona sus propios estados de carga, error y contenido.
 
 - Definición de Estados de UI (UIState):
 
+<img width="296" height="115" alt="image" src="https://github.com/user-attachments/assets/ecf6bc35-8ad8-4d94-aded-146622d0f878" />
 
 
 - Renderizado Condicional en la UI:
 
+<img width="483" height="134" alt="image" src="https://github.com/user-attachments/assets/74e7347b-b355-4aac-8392-d7e544c57e06" />
 
