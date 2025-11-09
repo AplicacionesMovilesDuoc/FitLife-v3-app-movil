@@ -1,8 +1,8 @@
-FitLife - Aplicación Móvil de Salud y Bienestar
+### FitLife - Aplicación Móvil de Salud y Bienestar
 
 FitLife es una aplicación móvil nativa de Android que ofrece una experiencia integral de salud, combinando planes de entrenamiento y nutricionales personalizados. La aplicación permite a los usuarios gestionar sus rutinas, monitorear métricas de salud y seguir su progreso, fomentando hábitos de vida saludables de una manera accesible y escalable.
 
-1. Alcance y Características Principales
+### 1. Alcance y Características Principales
 
 El objetivo de FitLife es proporcionar una herramienta robusta para el seguimiento de la salud y el fitness, centrada en el usuario y su progreso.
 
@@ -36,11 +36,11 @@ El objetivo de FitLife es proporcionar una herramienta robusta para el seguimien
 
 •Navegación Intuitiva: Sistema de navegación modular construido con Navigation Compose que gestiona el flujo de la aplicación de forma lógica.
 
-2. Requisitos Técnicos
+### 2. Requisitos Técnicos
 
 Para compilar y ejecutar este proyecto, necesitas un entorno de desarrollo configurado para Android con las siguientes especificaciones.
 
-Stack Tecnológico
+### Stack Tecnológico
 
 •Lenguaje: Kotlin 1.9.10
 
@@ -64,7 +64,7 @@ Stack Tecnológico
 
 •SDK Objetivo: API 34 (Android 14)
 
-3. Arquitectura y Flujo de Datos
+### 3. Arquitectura y Flujo de Datos
 
 El proyecto sigue las mejores prácticas de arquitectura de software para garantizar un código mantenible, escalable y testeable.
 
@@ -79,20 +79,14 @@ La organización de carpetas sigue el principio de separación de responsabilida
 
 ### Flujo de Datos  (Patrón MVVM)
 
-User Action → ViewModel → Repository → Firebase/API         
-                    ↓                                       
-                StateFlow                                   
-                    ↓                                       
-                UI Recomposition                            
+<img width="491" height="126" alt="image" src="https://github.com/user-attachments/assets/e7a0f7ee-069b-4c67-b89a-0e6972928e39" />
+                       
 
 
 ### Navegación
 
-Login Screen
-    ↓ (successful login)
-Home Screen (root)
-    ├─→ Profile Screen
-    └─→ Progress Screen
+<img width="220" height="120" alt="image" src="https://github.com/user-attachments/assets/0b0078c0-3ba8-4f90-9b5b-6611a13602a0" />
+
 
 **Gestión de backstack:**
 
