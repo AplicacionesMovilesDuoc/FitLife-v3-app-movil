@@ -145,15 +145,16 @@ avController.navigate(Screen.Home.route) {
 **Arquitectura reactiva con StateFlow:**
 
 **Estados definidos:**
+'''
 data class ProfileUiState(
     val isLoading: Boolean = false,
     val user: UserDto? = null,
     val avatarUri: Uri? = null,
     val error: String? = null
 )
-
+'''
 **Sincronización UI-Estado:**
-
+´´´
 // ViewModel actualiza estado
 _uiState.value = _uiState.value.copy(isLoading = true)
 
@@ -163,3 +164,4 @@ when {
     uiState.error != null -> ErrorMessage(uiState.error)
     else -> Content()
 }
+´´´
