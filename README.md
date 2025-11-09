@@ -60,7 +60,7 @@ Para compilar y ejecutar este proyecto, necesitas un entorno de desarrollo confi
     - Seleccionar un emulador de Android (API 24 o superior) o un dispositivo físico.
     - Ejecutar la configuración app desde Android Studio.
 
-3. Arquitectura y Flujo de Datos
+## 3. Arquitectura y Flujo de Datos
 
 El proyecto sigue las mejores prácticas de arquitectura de software para garantizar un código mantenible, escalable y testeable.
 
