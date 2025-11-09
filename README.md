@@ -77,6 +77,7 @@ La organización de carpetas sigue el principio de separación de responsabilida
 <img width="469" height="616" alt="image" src="https://github.com/user-attachments/assets/c1df1207-e11f-4201-b23f-1e333a73845a" />
 
 
+
 ### Flujo de Datos  (Patrón MVVM)
 
 User Action → ViewModel → Repository → Firebase/API         
