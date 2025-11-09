@@ -72,6 +72,12 @@ El proyecto sigue las mejores prácticas de arquitectura de software para garant
 
 La organización de carpetas sigue el principio de separación de responsabilidades, dividiendo el código por capas (UI, ViewModel, Data) y por funcionalidad.
 
+1. UI (Vista) notifica al ViewModel sobre una acción del usuario (ej: clic en un botón).
+2. El ViewModel procesa la lógica de negocio y solicita datos al Repository.
+3. El Repository obtiene los datos, ya sea de una fuente remota (Firebase) o local (DataStore).
+4. El ViewModel recibe los datos y actualiza su StateFlow, emitiendo un nuevo estado de la UI
+5. La UI, que está observando el StateFlow, reacciona automáticamente al cambio de estado y se recompone para mostrar la información actualizada.
+
 <img width="468" height="847" alt="image" src="https://github.com/user-attachments/assets/e8aeeb16-72cd-4ea0-afef-d33d33a4c6e3" />
 
 <img width="469" height="616" alt="image" src="https://github.com/user-attachments/assets/c1df1207-e11f-4201-b23f-1e333a73845a" />
@@ -88,41 +94,46 @@ La organización de carpetas sigue el principio de separación de responsabilida
 <img width="225" height="127" alt="image" src="https://github.com/user-attachments/assets/22b9e28f-b4c2-43c8-81c8-529ba955d460" />
 
 
+### 4. Funcionalidades Detalladas
+
+### Formularios de Autenticación con Validación
+
+Se ha implementado un sistema robusto de validación de formularios en tiempo real para el registro y el inicio de sesión.
+
+- Validaciones:
+    - Email: Campo requerido y con formato válido.
+    - Contraseña: Campo requerido y con un mínimo de 6 caracteres.
+    - Confirmación de Contraseña: Debe coincidir con la contraseña original.
+    - Nombre: Campo requerido.
+- Experiencia de Usuario:
+    - Botones deshabilitados durante los estados de carga para evitar envíos duplicados.
+    - Mensajes de error claros y específicos por cada campo de entrada.
+    - El botón de envío se mantiene deshabilitado hasta que todos los campos son válidos.
+
+
+### Sistema de Navegación
+
+La navegación se gestiona con ‘Navigation Compose’, definiendo rutas claras para cada pantalla y controlando el backstack de forma eficiente.
+
+- Rutas Definidas: Login, Register, Home, Profile, Progress.
+- Flujos de Navegación:
+    - Autenticación: El usuario puede navegar entre Login y Register.
+    - Dashboard Principal: Una vez autenticado, Home se convierte en la pantalla raíz, desde donde se puede acceder a Profile y Progress.
+    - Cierre de Sesión: Al hacer logout, el stack de navegación se limpia y el usuario es redirigido a Login.
+
+
+    
 **Gestión de backstack:**
 
 - Login/Register limpian el stack al autenticarse
 - Home es la raíz del stack autenticado
 - Botón back desde Home cierra la app
 
+  // Al navegar a Home después del login, se elimina el historial de autenticación.
+  navController.navigate(Screen.Home.route) {
+  popUpTo(Screen.Login.route) { inclusive = true }
+  }
 
-4. Funcionalidades
-
-### Formulario Validado - Login/Registro
-
-**Validaciones implementadas:**
-
-1. **Email**:
-    - Campo requerido
-    - Formato válido (regex)
-    - Mensaje: "Email inválido"
-2. **Contraseña**:
-    - Campo requerido
-    - Mínimo 6 caracteres
-    - Toggle mostrar/ocultar
-    - Mensaje: "La contraseña debe tener al menos 6 caracteres"
-3. **Confirmar Contraseña** (registro):
-    - Debe coincidir con contraseña
-    - Mensaje: "Las contraseñas no coinciden"
-4. **Nombre** (registro):
-    - Campo requerido
-    - Mensaje: "Por favor completa todos los campos"
-
-**Comportamiento:**
-
-- Botón deshabilitado durante carga
-- Mensajes de error específicos por campo
-- Validación en tiempo real
-- Bloqueo de envío si hay errores
 
 ### Navegación entre Vistas
 
@@ -182,4 +193,15 @@ when {
     else -> Content()
 }
 
-"
+### Gestión de Estado Reactiva
+
+La UI es un reflejo del estado de la aplicación gracias a StateFlow. 
+Cada pantalla gestiona sus propios estados de carga, error y contenido.
+
+- Definición de Estados de UI (UIState):
+
+
+
+- Renderizado Condicional en la UI:
+
+
