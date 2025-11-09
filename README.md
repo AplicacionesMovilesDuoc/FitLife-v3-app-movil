@@ -1,67 +1,90 @@
+FitLife - Aplicación Móvil de Salud y Bienestar
 
-FitLife - Aplicación Móvil 
-=================================
-FitLife propone una experiencia integral de salud en línea, combinando planes de entrenamiento personalizados 
-con asesorías nutricionales. La aplicación permite gestionar rutinas, métricas de salud y progresos de forma 
-segura y escalable, fomentando hábitos de vida saludable accesibles para todas las comunidades.
+FitLife es una aplicación móvil nativa de Android que ofrece una experiencia integral de salud, combinando planes de entrenamiento y nutricionales personalizados. La aplicación permite a los usuarios gestionar sus rutinas, monitorear métricas de salud y seguir su progreso, fomentando hábitos de vida saludables de una manera accesible y escalable.
 
+1. Alcance y Características Principales
 
+El objetivo de FitLife es proporcionar una herramienta robusta para el seguimiento de la salud y el fitness, centrada en el usuario y su progreso.
 
-1. Caso Elegido y Alcance
+### Entidades del Modelo
 
+•Usuario: Gestiona datos personales, credenciales y métricas de salud clave (peso, altura, objetivo).
 
-### Entidades Principales
+•Entrenador: Profesionales responsables de crear y asignar planes.
 
-- **Usuario**: Datos personales, métricas de salud (peso, altura, objetivo)
-- **Entrenador**: Profesionales que crean y gestionan planes
-- **Plan de Entrenamiento**: Rutinas personalizadas con ejercicios específicos
-- **Plan Nutricional**: Guías alimenticias balanceadas
-- **Progreso**: Seguimiento temporal de métricas del usuario
+•Plan de Entrenamiento: Conjunto de rutinas personalizadas con ejercicios específicos.
 
-### Este app implementa: 
-- **Diseño visual**: colores acordes a la temática de salud y bienestar.
-- **Navegación intuitiva**: Menús claros y accesibles.
-- **Funcionalidades clave**: Registro de usuarios, creación y seguimiento de planes, notificaciones.
-- **Gestión de estados**: StateFlow con MVVM usando los patrones de arquitectura.
-- **Persistencia de local**:  DataStore para tokens y configuraciones del usuario.
-- **Recursos nativos**: Cámara y galería para captura de avatar con manejo de permisos 
-- **Consumo de API**: Integración con Firebase Authentication, Firestore y Storage
+•Plan Nutricional: Guías alimenticias balanceadas para complementar el entrenamiento.
 
-2. Requisitos y Ejecución
+•Progreso: Registro histórico del seguimiento de las métricas del usuario para visualizar su evolución.
 
-### Stack Tecnológico
+### Funcionalidades Implementadas
 
-- **Lenguaje**: Kotlin 1.9.10
-- **Framework UI**: Jetpack Compose
-- **Arquitectura**: MVVM (Model-View-ViewModel)
-- **Backend**: Firebase (Authentication, Firestore, Storage)
-- **Persistencia Local**: DataStore Preferences
-- **Gestión de Estado**: StateFlow + Coroutines
-- **Navegación**: Navigation Compose
-- **Carga de Imágenes**: Coil
-- **Permisos**: Accompanist Permissions
-- **Min SDK**: 24 (Android 7.0)
-- **Target SDK**: 34 (Android 14)
+•Diseño Moderno: Interfaz de usuario limpia y atractiva con Jetpack Compose, siguiendo una paleta de colores orientada al bienestar.
 
+•Autenticación Segura: Registro e inicio de sesión de usuarios utilizando Firebase Authentication.
 
-3. Arquitectura y Flujo
+•Gestión de Datos en la Nube: Creación y seguimiento de planes almacenados en Firestore.
 
-### Estructura de Carpetas
+•Almacenamiento de Archivos: Subida y gestión de avatares de perfil con Firebase Storage.
+
+•Persistencia Local: Uso de DataStore para guardar configuraciones locales y tokens de sesión, garantizando una experiencia de usuario fluida.
+
+•Acceso a Recursos Nativos: Integración con la cámara y la galería para la selección de fotos de perfil, incluyendo un manejo robusto de permisos en tiempo de ejecución.
+
+•Arquitectura Reactiva: Implementación del patrón MVVM con StateFlow y Coroutines para una gestión de estado eficiente y predecible.
+
+•Navegación Intuitiva: Sistema de navegación modular construido con Navigation Compose que gestiona el flujo de la aplicación de forma lógica.
+
+2. Requisitos Técnicos
+
+Para compilar y ejecutar este proyecto, necesitas un entorno de desarrollo configurado para Android con las siguientes especificaciones.
+
+Stack Tecnológico
+
+•Lenguaje: Kotlin 1.9.10
+
+•Framework UI: Jetpack Compose
+
+•Arquitectura: MVVM (Model-View-ViewModel)
+
+•Backend (BaaS): Firebase (Authentication, Firestore, Storage)
+
+•Persistencia Local: Jetpack DataStore Preferences
+
+•Gestión de Estado: StateFlow + Kotlin Coroutines
+
+•Navegación: Navigation Compose
+
+•Carga de Imágenes: Coil
+
+•Manejo de Permisos: Accompanist Permissions
+
+•SDK Mínimo: API 24 (Android 7.0 Nougat)
+
+•SDK Objetivo: API 34 (Android 14)
+
+3. Arquitectura y Flujo de Datos
+
+El proyecto sigue las mejores prácticas de arquitectura de software para garantizar un código mantenible, escalable y testeable.
+
+### Estructura del Proyecto
+
+La organización de carpetas sigue el principio de separación de responsabilidades, dividiendo el código por capas (UI, ViewModel, Data) y por funcionalidad.
 
 <img width="468" height="847" alt="image" src="https://github.com/user-attachments/assets/e8aeeb16-72cd-4ea0-afef-d33d33a4c6e3" />
 
 <img width="469" height="616" alt="image" src="https://github.com/user-attachments/assets/c1df1207-e11f-4201-b23f-1e333a73845a" />
 
 
-### Flujo de Datos
+### Flujo de Datos  (Patrón MVVM)
 
-===========================================================
-User Action → ViewModel → Repository → Firebase/API         |
-                    ↓                                       |
-                StateFlow                                   |
-                    ↓                                       |
-                UI Recomposition                            |
-===========================================================
+User Action → ViewModel → Repository → Firebase/API         
+                    ↓                                       
+                StateFlow                                   
+                    ↓                                       
+                UI Recomposition                            
+
 
 ### Navegación
 
@@ -152,9 +175,9 @@ data class ProfileUiState(
     val avatarUri: Uri? = null,
     val error: String? = null
 )
-'''
+
 **Sincronización UI-Estado:**
-´´´
+
 // ViewModel actualiza estado
 _uiState.value = _uiState.value.copy(isLoading = true)
 
@@ -164,4 +187,5 @@ when {
     uiState.error != null -> ErrorMessage(uiState.error)
     else -> Content()
 }
-´´´
+
+"
