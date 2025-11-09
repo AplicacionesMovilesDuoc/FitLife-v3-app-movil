@@ -53,4 +53,113 @@ segura y escalable, fomentando hábitos de vida saludable accesibles para todas 
 <img width="469" height="616" alt="image" src="https://github.com/user-attachments/assets/c1df1207-e11f-4201-b23f-1e333a73845a" />
 
 
+### Flujo de Datos
 
+===========================================================
+User Action → ViewModel → Repository → Firebase/API         |
+                    ↓                                       |
+                StateFlow                                   |
+                    ↓                                       |
+                UI Recomposition                            |
+===========================================================
+
+### Navegación
+
+Login Screen
+    ↓ (successful login)
+Home Screen (root)
+    ├─→ Profile Screen
+    └─→ Progress Screen
+
+**Gestión de backstack:**
+
+- Login/Register limpian el stack al autenticarse
+- Home es la raíz del stack autenticado
+- Botón back desde Home cierra la app
+
+
+4. Funcionalidades
+
+### Formulario Validado - Login/Registro
+
+**Validaciones implementadas:**
+
+1. **Email**:
+    - Campo requerido
+    - Formato válido (regex)
+    - Mensaje: "Email inválido"
+2. **Contraseña**:
+    - Campo requerido
+    - Mínimo 6 caracteres
+    - Toggle mostrar/ocultar
+    - Mensaje: "La contraseña debe tener al menos 6 caracteres"
+3. **Confirmar Contraseña** (registro):
+    - Debe coincidir con contraseña
+    - Mensaje: "Las contraseñas no coinciden"
+4. **Nombre** (registro):
+    - Campo requerido
+    - Mensaje: "Por favor completa todos los campos"
+
+**Comportamiento:**
+
+- Botón deshabilitado durante carga
+- Mensajes de error específicos por campo
+- Validación en tiempo real
+- Bloqueo de envío si hay errores
+
+### Navegación entre Vistas
+
+**Sistema de navegación implementado:**
+
+Rutas definidas:
+sealed class Screen(val route: String) {
+    object Login : Screen("login")
+    object Register : Screen("register")
+    object Home : Screen("home")
+    object Profile : Screen("profile")
+    object Progress : Screen("progress")
+}
+
+
+**Flujos principales:**
+
+1. **Autenticación**: Login ↔ Register
+2. **Dashboard**: Home → Profile/Progress
+3. **Logout**: Cualquier pantalla → Login (limpia stack)
+
+
+Backstack management:
+avController.navigate(Screen.Home.route) {
+    popUpTo(Screen.Login.route) { inclusive = true }
+}
+
+**Estados vacíos/errores:**
+
+- Progress sin registros: EmptyProgressState con CTA
+- Error de red: ErrorState con botón "Reintentar"
+- Carga: CircularProgressIndicator centrado
+
+
+### Gestión de Estado
+
+**Arquitectura reactiva con StateFlow:**
+
+**Estados definidos:**
+data class ProfileUiState(
+    val isLoading: Boolean = false,
+    val user: UserDto? = null,
+    val avatarUri: Uri? = null,
+    val error: String? = null
+)
+
+**Sincronización UI-Estado:**
+
+// ViewModel actualiza estado
+_uiState.value = _uiState.value.copy(isLoading = true)
+
+// UI reacciona automáticamente
+when {
+    uiState.isLoading -> CircularProgressIndicator()
+    uiState.error != null -> ErrorMessage(uiState.error)
+    else -> Content()
+}
