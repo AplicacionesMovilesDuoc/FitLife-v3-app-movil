@@ -80,20 +80,13 @@ La organización de carpetas sigue el principio de separación de responsabilida
 
 ### Flujo de Datos  (Patrón MVVM)
 
-User Action → ViewModel → Repository → Firebase/API         
-                    ↓                                       
-                StateFlow                                   
-                    ↓                                       
-                UI Recomposition                            
+<img width="430" height="136" alt="image" src="https://github.com/user-attachments/assets/efe3bd76-671d-4ab2-8b8b-1d73265e6000" />
 
 
 ### Navegación
 
-Login Screen
-    ↓ (successful login)
-Home Screen (root)
-    ├─→ Profile Screen
-    └─→ Progress Screen
+<img width="225" height="127" alt="image" src="https://github.com/user-attachments/assets/22b9e28f-b4c2-43c8-81c8-529ba955d460" />
+
 
 **Gestión de backstack:**
 
