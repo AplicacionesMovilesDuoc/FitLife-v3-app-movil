@@ -225,3 +225,25 @@ Cada pantalla gestiona sus propios estados de carga, error y contenido.
 
 <img width="483" height="134" alt="image" src="https://github.com/user-attachments/assets/74e7347b-b355-4aac-8392-d7e544c57e06" />
 
+
+
+## 6. User flows
+
+- Flujo de Registro (Éxito):
+    - Usuario abre la app y ve la pantalla de Login.
+    - Navega a la pantalla de Registro.
+    - Completa el formulario con datos válidos.
+    - Presiona "Registrar". Se muestra un indicador de carga.
+    - La cuenta se crea exitosamente.
+    - El usuario es redirigido a la pantalla Home. El backstack de autenticación se limpia.
+- Flujo de Registro (Error - Usuario ya existe):
+    - Usuario completa el formulario con un email ya registrado.
+    - Presiona "Registrar".
+    - Se muestra un indicador de carga.
+    - La operación falla. El indicador de carga desaparece
+    - Se muestra un mensaje de error en pantalla (ej: "El correo electrónico ya está en uso").
+- Flujo de Carga de Perfil:
+    - Usuario navega a la pantalla de Perfil.
+    - Se muestra un CircularProgressIndicator mientras se obtienen los datos del usuario.
+    - Una vez obtenidos los datos de Firestore, el indicador desaparece.
+    - La información del usuario (nombre, email, avatar) se muestra en pantalla.
