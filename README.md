@@ -48,5 +48,9 @@ segura y escalable, fomentando hábitos de vida saludable accesibles para todas 
 
 ### Estructura de Carpetas
 
+<img width="468" height="847" alt="image" src="https://github.com/user-attachments/assets/e8aeeb16-72cd-4ea0-afef-d33d33a4c6e3" />
+
+<img width="469" height="616" alt="image" src="https://github.com/user-attachments/assets/c1df1207-e11f-4201-b23f-1e333a73845a" />
+
 
 
