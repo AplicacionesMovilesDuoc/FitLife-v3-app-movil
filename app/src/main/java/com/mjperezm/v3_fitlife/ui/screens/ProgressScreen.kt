@@ -1,6 +1,5 @@
 package com.mjperezm.v3_fitlife.ui.screens
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mjperezm.v3_fitlife.data.remote.ProgresoDto
 import com.mjperezm.v3_fitlife.viewmodel.ProgressViewModel
-
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -315,8 +314,18 @@ private fun ProgressItem(progress: ProgresoDto) {
 
                 Spacer(modifier = Modifier.height(4.dp))
 
+                // Formatear fecha de forma más legible
+                val fechaFormateada = try {
+                    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                    val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val date = inputFormat.parse(progress.fecha)
+                    date?.let { outputFormat.format(it) } ?: progress.fecha
+                } catch (e: Exception) {
+                    progress.fecha
+                }
+
                 Text(
-                    text = progress.fecha,
+                    text = fechaFormateada,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

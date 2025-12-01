@@ -9,9 +9,12 @@ data class SignupRequest(
     @SerializedName("password")
     val password: String,
 
-    @SerializedName("name")
-    val name: String,
-
     @SerializedName("role")
-    val role: String = "user" // user o trainer
+    val role: String? = "USUARIO", // "USUARIO" o "ENTRENADOR"
+
+    @SerializedName("nombre")
+    val nombre: String? = null,
+
+    @SerializedName("telefono")
+    val telefono: String? = null
 )

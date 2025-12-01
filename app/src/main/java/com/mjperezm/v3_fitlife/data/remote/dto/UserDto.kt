@@ -3,27 +3,37 @@ package com.mjperezm.v3_fitlife.data.remote.dto
 import com.google.gson.annotations.SerializedName
 
 data class UserDto(
-    @SerializedName("id")
-    val id: Int,
+    @SerializedName("_id")
+    val id: String,
 
     @SerializedName("email")
     val email: String,
 
-    @SerializedName("name")
-    val name: String?,
-
     @SerializedName("role")
-    val role: String?, // "user" o "trainer"
+    val role: String, // "USUARIO", "ENTRENADOR", "ADMIN"
 
-    @SerializedName("created_at")
-    val createdAt: Long?,
+    @SerializedName("isActive")
+    val isActive: Boolean? = true,
+
+    @SerializedName("emailVerified")
+    val emailVerified: Boolean? = false,
+
+    // Campos del perfil (cuando se obtiene con populate)
+    @SerializedName("nombre")
+    val name: String? = null,
+
+    @SerializedName("telefono")
+    val telefono: String? = null,
+
+    @SerializedName("edad")
+    val edad: Int? = null,
 
     @SerializedName("peso")
-    val peso: Double?,
+    val peso: Double? = null,
 
     @SerializedName("altura")
-    val altura: Double?,
+    val altura: Double? = null,
 
     @SerializedName("objetivo")
-    val objetivo: String?
+    val objetivo: String? = null
 )

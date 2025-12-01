@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.mjperezm.v3_fitlife" />
-                  <option name="mobileSdkAppId" value="1:541571081159:android:3912e7cf7f1ad2b4d82fe2" />
-                  <option name="projectId" value="formularioregistro-6f71fa75" />
-                  <option name="projectNumber" value="541571081159" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -1,6 +1,5 @@
 package com.mjperezm.v3_fitlife.viewmodel
 
-
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
@@ -41,6 +40,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     /**
      * Cargar perfil del usuario desde la API
+     * Ahora usa el endpoint /auth/profile que devuelve el usuario completo
      */
     fun loadUserProfile() {
         _uiState.value = _uiState.value.copy(
@@ -50,22 +50,38 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
         viewModelScope.launch {
             try {
-                val user = apiService.getCurrentUser()
+                // Intentar obtener el perfil completo con datos adicionales
+                val userProfile = try {
+                    apiService.getUserProfile()
+                    // Si existe perfil de usuario, obtener el user completo
+                    apiService.getAuthProfile()
+                } catch (e: Exception) {
+                    // Si no hay perfil de usuario, solo obtener datos básicos
+                    apiService.getAuthProfile()
+                }
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    user = user,
+                    user = userProfile,
                     error = null
                 )
 
             } catch (e: Exception) {
+                val errorMessage = when {
+                    e.message?.contains("401") == true ->
+                        "Sesión expirada. Por favor inicia sesión nuevamente"
+                    e.message?.contains("Unable to resolve host") == true ->
+                        "Sin conexión a internet. Verifica tu red."
+                    e.message?.contains("timeout") == true ->
+                        "El servidor está tardando en responder. Por favor intenta de nuevo."
+                    e.message?.contains("Failed to connect") == true ->
+                        "No se puede conectar al servidor. Verifica tu conexión."
+                    else -> "Error al cargar perfil: ${e.localizedMessage}"
+                }
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = when {
-                        e.message?.contains("401") == true -> "Sesión expirada. Por favor inicia sesión nuevamente"
-                        e.message?.contains("Unable to resolve host") == true -> "Sin conexión a internet"
-                        else -> "Error al cargar perfil: ${e.localizedMessage}"
-                    }
+                    error = errorMessage
                 )
             }
         }
@@ -84,6 +100,9 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     /**
      * Actualizar avatar del usuario
+     * NOTA: Por ahora solo se guarda localmente.
+     * Si quieres subir a un servidor, necesitarás implementar
+     * el endpoint de upload en tu API.
      */
     fun updateAvatar(uri: Uri?) {
         viewModelScope.launch {

@@ -1,6 +1,5 @@
 package com.mjperezm.v3_fitlife.viewmodel
 
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -76,9 +75,9 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 val request = LoginRequest(email = email, password = password)
                 val response = apiService.login(request)
 
-                // Guardar token y userId
-                sessionManager.saveAuthToken(response.authToken)
-                sessionManager.saveUserId(response.user.id.toString())
+                // Guardar token y userId (ahora _id es String)
+                sessionManager.saveAuthToken(response.accessToken)
+                sessionManager.saveUserId(response.user.id)
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -88,13 +87,20 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 )
 
             } catch (e: Exception) {
+                val errorMessage = when {
+                    e.message?.contains("401") == true -> "Email o contraseña incorrectos"
+                    e.message?.contains("Unable to resolve host") == true ->
+                        "Sin conexión a internet. Verifica tu red."
+                    e.message?.contains("timeout") == true ->
+                        "El servidor está tardando en responder. Por favor intenta de nuevo."
+                    e.message?.contains("Failed to connect") == true ->
+                        "No se puede conectar al servidor. Verifica tu conexión."
+                    else -> "Error al iniciar sesión: ${e.localizedMessage}"
+                }
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = when {
-                        e.message?.contains("401") == true -> "Email o contraseña incorrectos"
-                        e.message?.contains("Unable to resolve host") == true -> "Sin conexión a internet"
-                        else -> "Error al iniciar sesión: ${e.localizedMessage}"
-                    }
+                    error = errorMessage
                 )
             }
         }
@@ -141,16 +147,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val request = SignupRequest(
-                    name = name,
                     email = email,
                     password = password,
-                    role = "user"
+                    role = "USUARIO",
+                    nombre = name
                 )
                 val response = apiService.signup(request)
 
                 // Guardar token y userId
-                sessionManager.saveAuthToken(response.authToken)
-                sessionManager.saveUserId(response.user.id.toString())
+                sessionManager.saveAuthToken(response.accessToken)
+                sessionManager.saveUserId(response.user.id)
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -159,13 +165,22 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 )
 
             } catch (e: Exception) {
+                val errorMessage = when {
+                    e.message?.contains("409") == true ||
+                            e.message?.contains("ya está registrado") == true ->
+                        "Este email ya está registrado"
+                    e.message?.contains("Unable to resolve host") == true ->
+                        "Sin conexión a internet. Verifica tu red."
+                    e.message?.contains("timeout") == true ->
+                        "El servidor está tardando en responder. Por favor intenta de nuevo."
+                    e.message?.contains("Failed to connect") == true ->
+                        "No se puede conectar al servidor. Verifica tu conexión."
+                    else -> "Error al registrar: ${e.localizedMessage}"
+                }
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = when {
-                        e.message?.contains("409") == true -> "Este email ya está registrado"
-                        e.message?.contains("Unable to resolve host") == true -> "Sin conexión a internet"
-                        else -> "Error al registrar: ${e.localizedMessage}"
-                    }
+                    error = errorMessage
                 )
             }
         }
