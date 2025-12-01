@@ -4,23 +4,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.mjperezm.v3_fitlife.ui.screens.*
 import com.mjperezm.v3_fitlife.viewmodel.AuthViewModel
 
-
-
-/**
- * Rutas de navegación de la app
- */
 sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register : Screen("register")
     object Home : Screen("home")
     object Profile : Screen("profile")
     object Progress : Screen("progress")
+    object PlanList : Screen("plan_list")
+    object PlanDetail : Screen("plan_detail/{planId}") {
+        fun createRoute(planId: String) = "plan_detail/$planId"
+    }
+    object NutritionDetail : Screen("nutrition_detail/{planId}") {
+        fun createRoute(planId: String) = "nutrition_detail/$planId"
+    }
 }
 
 @Composable
@@ -29,7 +33,6 @@ fun AppNavigation() {
     val authViewModel: AuthViewModel = viewModel()
     val authState by authViewModel.uiState.collectAsState()
 
-    // Determinar la ruta inicial según el estado de autenticación
     val startDestination = if (authState.isAuthenticated) {
         Screen.Home.route
     } else {
@@ -40,14 +43,13 @@ fun AppNavigation() {
         navController = navController,
         startDestination = startDestination
     ) {
-        // Pantalla de Login
+        // Autenticación
         composable(Screen.Login.route) {
             LoginScreen(
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register.route)
                 },
                 onLoginSuccess = {
-                    // Navegar a Home y limpiar el stack
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
@@ -56,14 +58,12 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Registro
         composable(Screen.Register.route) {
             RegisterScreen(
                 onNavigateToLogin = {
                     navController.popBackStack()
                 },
                 onRegisterSuccess = {
-                    // Navegar a Home y limpiar el stack
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Register.route) { inclusive = true }
                     }
@@ -72,7 +72,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla Home (Principal)
+        // Home
         composable(Screen.Home.route) {
             HomeScreen(
                 onNavigateToProfile = {
@@ -81,8 +81,10 @@ fun AppNavigation() {
                 onNavigateToProgress = {
                     navController.navigate(Screen.Progress.route)
                 },
+                onNavigateToPlans = {
+                    navController.navigate(Screen.PlanList.route)
+                },
                 onLogout = {
-                    // Volver a Login y limpiar el stack
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Home.route) { inclusive = true }
                     }
@@ -91,7 +93,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Perfil
+        // Profile
         composable(Screen.Profile.route) {
             ProfileScreen(
                 onNavigateBack = {
@@ -100,9 +102,56 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Progreso
+        // Progress
         composable(Screen.Progress.route) {
             ProgressScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // Plan List
+        composable(Screen.PlanList.route) {
+            PlanListScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onPlanSelected = { planId ->
+                    navController.navigate(Screen.PlanDetail.createRoute(planId))
+                }
+            )
+        }
+
+        // Plan Detail
+        composable(
+            route = Screen.PlanDetail.route,
+            arguments = listOf(
+                navArgument("planId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val planId = backStackEntry.arguments?.getString("planId") ?: ""
+            PlanDetailScreen(
+                planId = planId,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToNutrition = { nutritionId ->
+                    navController.navigate(Screen.NutritionDetail.createRoute(nutritionId))
+                }
+            )
+        }
+
+        // Nutrition Detail
+        composable(
+            route = Screen.NutritionDetail.route,
+            arguments = listOf(
+                navArgument("planId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val planId = backStackEntry.arguments?.getString("planId") ?: ""
+            NutritionDetailScreen(
+                planId = planId,
                 onNavigateBack = {
                     navController.popBackStack()
                 }

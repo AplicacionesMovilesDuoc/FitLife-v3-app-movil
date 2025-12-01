@@ -61,11 +61,13 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
 
+    // Para gráficos
+    implementation("com.patrykandpatrick.vico:compose:1.13.1")
+    implementation("com.patrykandpatrick.vico:compose-m3:1.13.1")
 
-
-
-
-
+    // Para fechas
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+    
     // Compose BOM
 
     implementation("androidx.compose.ui:ui")
@@ -115,4 +117,5 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
 }

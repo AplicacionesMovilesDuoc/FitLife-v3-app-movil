@@ -1,7 +1,5 @@
 package com.mjperezm.v3_fitlife.ui.screens
 
-
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,6 +19,7 @@ import com.mjperezm.v3_fitlife.viewmodel.AuthViewModel
 fun HomeScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToProgress: () -> Unit,
+    onNavigateToPlans: () -> Unit, // NUEVO
     onLogout: () -> Unit,
     authViewModel: AuthViewModel = viewModel()
 ) {
@@ -120,6 +119,16 @@ fun HomeScreen(
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
+
+            item {
+                QuickActionCard(
+                    title = "Planes de Entrenamiento",
+                    icon = Icons.Filled.FitnessCenter,
+                    onClick = onNavigateToPlans,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
 
             // Lista de planes de ejemplo
             items(getSamplePlans()) { plan ->

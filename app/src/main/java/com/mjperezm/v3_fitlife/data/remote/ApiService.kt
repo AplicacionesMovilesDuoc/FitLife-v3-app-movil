@@ -55,6 +55,18 @@ interface ApiService {
 
     @DELETE("progreso/{id}")
     suspend fun deleteProgreso(@Path("id") id: String): DeleteResponseDto
+
+    // ==================== PLANES NUTRICIONALES ====================
+    @GET("plan-nutricional")
+    suspend fun getPlanesNutricionales(
+        @Query("objetivo") objetivo: String? = null
+    ): List<PlanNutricionalDto>
+
+    @GET("plan-nutricional/{id}")
+    suspend fun getPlanNutricional(@Path("id") id: String): PlanNutricionalDto
+
+    @GET("plan-nutricional/search")
+    suspend fun searchPlanesNutricionales(@Query("q") query: String): List<PlanNutricionalDto>
 }
 
 // ==================== DTOs ADICIONALES ====================
@@ -134,4 +146,44 @@ data class ProgresoStatsDto(
 data class DeleteResponseDto(
     val deleted: Boolean,
     val message: String
+)
+
+// DTOs
+
+data class PlanNutricionalDto(
+    val _id: String,
+    val nombre: String,
+    val descripcion: String,
+    val duracion: String?,
+    val objetivo: String?,
+    val comidas: List<ComidaDto>?,
+    val disponible: Boolean?,
+    val imagen: String?,
+    val imagenThumbnail: String?,
+    val createdBy: String?
+)
+
+data class ComidaDto(
+    val tipo: String,
+    val alimentos: List<String>,
+    val calorias: Int,
+    val proteinas: Double,
+    val carbohidratos: Double,
+    val grasas: Double
+)
+
+data class CreatePlanNutricionalDto(
+    val nombre: String,
+    val descripcion: String,
+    val duracion: String?,
+    val objetivo: String?,
+    val comidas: List<ComidaDto>?
+)
+
+data class UpdatePlanNutricionalDto(
+    val nombre: String?,
+    val descripcion: String?,
+    val duracion: String?,
+    val objetivo: String?,
+    val comidas: List<ComidaDto>?
 )
