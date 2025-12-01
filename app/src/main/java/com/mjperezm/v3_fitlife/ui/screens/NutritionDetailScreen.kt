@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mjperezm.v3_fitlife.data.remote.ComidaDto
+import com.mjperezm.v3_fitlife.data.remote.PlanNutricionalDto
 import com.mjperezm.v3_fitlife.viewmodel.PlanViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,8 +77,19 @@ fun NutritionDetailScreen(
                         }
 
                         plan.comidas?.let { comidas ->
-                            items(comidas) { comida ->
-                                MealCard(comida)
+                            if (comidas.isEmpty()) {
+                                item {
+                                    Text(
+                                        text = "No hay comidas definidas para este plan",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                }
+                            } else {
+                                items(comidas) { comida ->
+                                    MealCard(comida)
+                                }
                             }
                         }
                     }
@@ -88,9 +100,7 @@ fun NutritionDetailScreen(
 }
 
 @Composable
-private fun NutritionHeaderCard(
-    plan: com.mjperezm.v3_fitlife.data.remote.PlanNutricionalDto
-) {
+private fun NutritionHeaderCard(plan: PlanNutricionalDto) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -130,6 +140,27 @@ private fun NutritionHeaderCard(
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+
+                    // Mostrar email del creador si existe
+                    plan.createdBy?.email?.let { email ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Person,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Creado por: $email",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
             }
 
@@ -140,16 +171,16 @@ private fun NutritionHeaderCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 plan.duracion?.let { duracion ->
-                    InfoChip(
+                    NutritionInfoChip(
                         icon = Icons.Filled.CalendarToday,
                         label = duracion
                     )
                 }
 
                 plan.objetivo?.let { objetivo ->
-                    InfoChip(
+                    NutritionInfoChip(
                         icon = Icons.Filled.Flag,
-                        label = objetivo.capitalize()
+                        label = objetivo.replaceFirstChar { it.uppercase() }
                     )
                 }
             }
@@ -193,7 +224,7 @@ private fun MealCard(comida: ComidaDto) {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = comida.tipo.capitalize(),
+                        text = comida.tipo.replaceFirstChar { it.uppercase() },
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -293,5 +324,34 @@ private fun MacroInfo(
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+// InfoChip local para NutritionDetailScreen
+@Composable
+private fun NutritionInfoChip(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String
+) {
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        color = MaterialTheme.colorScheme.surface
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+                tint = MaterialTheme.colorScheme.tertiary
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium
+            )
+        }
     }
 }

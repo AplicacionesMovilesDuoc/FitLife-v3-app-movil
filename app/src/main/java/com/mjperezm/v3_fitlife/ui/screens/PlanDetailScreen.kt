@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mjperezm.v3_fitlife.data.remote.EjercicioDto
+import com.mjperezm.v3_fitlife.data.remote.PlanDto
 import com.mjperezm.v3_fitlife.viewmodel.PlanViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,8 +106,19 @@ fun PlanDetailScreen(
                         }
 
                         plan.ejercicios?.let { ejercicios ->
-                            items(ejercicios) { ejercicio ->
-                                ExerciseCard(ejercicio)
+                            if (ejercicios.isEmpty()) {
+                                item {
+                                    Text(
+                                        text = "No hay ejercicios definidos para este plan",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                }
+                            } else {
+                                items(ejercicios) { ejercicio ->
+                                    ExerciseCard(ejercicio)
+                                }
                             }
                         }
 
@@ -131,7 +143,7 @@ fun PlanDetailScreen(
 }
 
 @Composable
-private fun PlanHeaderCard(plan: com.mjperezm.v3_fitlife.data.remote.PlanDto) {
+private fun PlanHeaderCard(plan: PlanDto) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -171,6 +183,27 @@ private fun PlanHeaderCard(plan: com.mjperezm.v3_fitlife.data.remote.PlanDto) {
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+
+                    // ACTUALIZADO: Mostrar email del creador si existe
+                    plan.createdBy?.email?.let { email ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Person,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Creado por: $email",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
             }
 
@@ -190,14 +223,14 @@ private fun PlanHeaderCard(plan: com.mjperezm.v3_fitlife.data.remote.PlanDto) {
                 plan.dificultad?.let { dificultad ->
                     InfoChip(
                         icon = Icons.Filled.BarChart,
-                        label = dificultad.capitalize()
+                        label = dificultad.replaceFirstChar { it.uppercase() }
                     )
                 }
 
                 plan.tipo?.let { tipo ->
                     InfoChip(
                         icon = Icons.Filled.Category,
-                        label = tipo.capitalize()
+                        label = tipo.replaceFirstChar { it.uppercase() }
                     )
                 }
             }
@@ -336,7 +369,7 @@ private fun NutritionPlanCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     AssistChip(
                         onClick = { },
-                        label = { Text(objetivo.capitalize()) },
+                        label = { Text(objetivo.replaceFirstChar { it.uppercase() }) },
                         leadingIcon = {
                             Icon(
                                 Icons.Filled.Flag,

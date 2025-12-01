@@ -102,7 +102,12 @@ data class PlanDto(
     val disponible: Boolean?,
     val imagen: String?,
     val imagenThumbnail: String?,
-    val createdBy: String?
+    val createdBy: CreatedByDto? // CAMBIO: de String? a CreatedByDto?
+)
+
+data class CreatedByDto(
+    val _id: String?,
+    val email: String?
 )
 
 data class EjercicioDto(
@@ -160,7 +165,7 @@ data class PlanNutricionalDto(
     val disponible: Boolean?,
     val imagen: String?,
     val imagenThumbnail: String?,
-    val createdBy: String?
+    val createdBy: CreatedByDto?
 )
 
 data class ComidaDto(
