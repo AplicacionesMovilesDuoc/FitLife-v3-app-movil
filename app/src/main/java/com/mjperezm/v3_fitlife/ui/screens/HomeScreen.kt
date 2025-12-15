@@ -19,7 +19,9 @@ import com.mjperezm.v3_fitlife.viewmodel.AuthViewModel
 fun HomeScreen(
     onNavigateToProfile: () -> Unit,
     onNavigateToProgress: () -> Unit,
-    onNavigateToPlans: () -> Unit, // NUEVO
+    onNavigateToPlans: () -> Unit,
+    onNavigateToAppointments: () -> Unit, // ✨ NUEVO
+    onNavigateToSettings: () -> Unit, // ✨ NUEVO
     onLogout: () -> Unit,
     authViewModel: AuthViewModel = viewModel()
 ) {
@@ -48,6 +50,12 @@ fun HomeScreen(
                         Icon(
                             Icons.Filled.AccountCircle,
                             contentDescription = "Perfil"
+                        )
+                    }
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(
+                            Icons.Filled.Settings,
+                            contentDescription = "Configuración"
                         )
                     }
                     IconButton(onClick = { showLogoutDialog = true }) {
@@ -106,8 +114,62 @@ fun HomeScreen(
                         onClick = onNavigateToProgress,
                         modifier = Modifier.weight(1f)
                     )
+
+                    QuickActionCard(
+                        title = "Citas",
+                        icon = Icons.Filled.Event,
+                        onClick = onNavigateToAppointments,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    QuickActionCard(
+                        title = "Configuración",
+                        icon = Icons.Filled.Settings,
+                        onClick = onNavigateToSettings,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
+
+
+            // Card informativo de nuevas funciones
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Stars,
+                            contentDescription = null,
+                            modifier = Modifier.size(32.dp),
+                            tint = MaterialTheme.colorScheme.tertiary
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "¡Nuevas funciones!",
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                            Text(
+                                text = "Ahora puedes agendar citas con entrenadores y editar tu perfil",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
+
 
             // Sección de Planes
             item {

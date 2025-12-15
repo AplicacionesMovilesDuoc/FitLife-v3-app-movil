@@ -40,8 +40,10 @@ import java.util.*
 @Composable
 fun ProfileScreen(
     onNavigateBack: () -> Unit,
-    viewModel: ProfileViewModel = viewModel()
+    onNavigateToEdit: () -> Unit, //  NUEVO
+
 ) {
+    val viewModel: ProfileViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
@@ -116,6 +118,15 @@ fun ProfileScreen(
     }
 
     Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onNavigateToEdit,
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
+                Icon(Icons.Filled.Edit, contentDescription = "Editar perfil")
+            }
+        },
+
         topBar = {
             TopAppBar(
                 title = { Text("Mi Perfil") },
@@ -125,12 +136,18 @@ fun ProfileScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = onNavigateToEdit) {
+                        Icon(Icons.Filled.Edit, contentDescription = "Editar perfil")
+                    }
                     IconButton(onClick = { viewModel.loadUserProfile() }) {
                         Icon(Icons.Filled.Refresh, contentDescription = "Actualizar")
                     }
                 }
+
             )
         }
+
+
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -173,7 +190,8 @@ fun ProfileScreen(
                 uiState.user != null -> {
                     ProfileContent(
                         uiState = uiState,
-                        onAvatarClick = { showImagePicker = true }
+                        onAvatarClick = { showImagePicker = true },
+                        onNavigateToEdit = onNavigateToEdit
                     )
                 }
             }
@@ -184,7 +202,8 @@ fun ProfileScreen(
 @Composable
 private fun ProfileContent(
     uiState: com.mjperezm.v3_fitlife.viewmodel.ProfileUiState,
-    onAvatarClick: () -> Unit
+    onAvatarClick: () -> Unit,
+    onNavigateToEdit: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -281,16 +300,36 @@ private fun ProfileContent(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
+
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(
-                    text = "Información Personal",
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+
+                // ✅ Header con botón Editar
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Información Personal",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+
+                    TextButton(onClick = onNavigateToEdit) {
+                        Icon(
+                            Icons.Filled.Edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Editar")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 ProfileInfoItem(
                     icon = Icons.Filled.Email,

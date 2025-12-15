@@ -25,6 +25,11 @@ sealed class Screen(val route: String) {
     object NutritionDetail : Screen("nutrition_detail/{planId}") {
         fun createRoute(planId: String) = "nutrition_detail/$planId"
     }
+    // ✨ Nuevas pantallas
+    object Appointments : Screen("appointments")
+    object BookAppointment : Screen("book_appointment")
+    object EditProfile : Screen("edit_profile")
+    object Settings : Screen("settings")
 }
 
 @Composable
@@ -43,7 +48,7 @@ fun AppNavigation() {
         navController = navController,
         startDestination = startDestination
     ) {
-        // Autenticación
+        // ==================== AUTENTICACIÓN ====================
         composable(Screen.Login.route) {
             LoginScreen(
                 onNavigateToRegister = {
@@ -72,7 +77,7 @@ fun AppNavigation() {
             )
         }
 
-        // Home
+        // ==================== HOME ====================
         composable(Screen.Home.route) {
             HomeScreen(
                 onNavigateToProfile = {
@@ -84,6 +89,12 @@ fun AppNavigation() {
                 onNavigateToPlans = {
                     navController.navigate(Screen.PlanList.route)
                 },
+                onNavigateToAppointments = {
+                    navController.navigate(Screen.Appointments.route)
+                },
+                onNavigateToSettings = {
+                    navController.navigate(Screen.Settings.route)
+                },
                 onLogout = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Home.route) { inclusive = true }
@@ -93,16 +104,27 @@ fun AppNavigation() {
             )
         }
 
-        // Profile
+        // ==================== PERFIL ====================
         composable(Screen.Profile.route) {
             ProfileScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToEdit = {
+                    navController.navigate(Screen.EditProfile.route)
+                }
+            )
+        }
+
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(
                 onNavigateBack = {
                     navController.popBackStack()
                 }
             )
         }
 
-        // Progress
+        // ==================== PROGRESO ====================
         composable(Screen.Progress.route) {
             ProgressScreen(
                 onNavigateBack = {
@@ -111,7 +133,7 @@ fun AppNavigation() {
             )
         }
 
-        // Plan List
+        // ==================== PLANES ====================
         composable(Screen.PlanList.route) {
             PlanListScreen(
                 onNavigateBack = {
@@ -123,7 +145,6 @@ fun AppNavigation() {
             )
         }
 
-        // Plan Detail
         composable(
             route = Screen.PlanDetail.route,
             arguments = listOf(
@@ -142,7 +163,6 @@ fun AppNavigation() {
             )
         }
 
-        // Nutrition Detail
         composable(
             route = Screen.NutritionDetail.route,
             arguments = listOf(
@@ -155,6 +175,44 @@ fun AppNavigation() {
                 onNavigateBack = {
                     navController.popBackStack()
                 }
+            )
+        }
+
+        // ==================== CITAS ====================
+        composable(Screen.Appointments.route) {
+            AppointmentsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateToBook = {
+                    navController.navigate(Screen.BookAppointment.route)
+                }
+            )
+        }
+
+        composable(Screen.BookAppointment.route) {
+            BookAppointmentScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onBookingSuccess = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // ==================== CONFIGURACIÓN ====================
+        composable(Screen.Settings.route) {
+            SettingsScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onLogout = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Home.route) { inclusive = true }
+                    }
+                },
+                authViewModel = authViewModel
             )
         }
     }
