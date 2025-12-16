@@ -67,7 +67,7 @@ dependencies {
 
     // Para fechas
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
-    
+
     // Compose BOM
 
     implementation("androidx.compose.ui:ui")
@@ -111,6 +111,8 @@ dependencies {
 
     // Testing
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.7.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.00"))
